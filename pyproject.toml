@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "naidb"
+version = "0.1.0"
+description = ""
+authors = ["mmatlin <33261504+mmatlin@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+# No guarantee that this is a permalink:
+# See https://github.com/dabeaz/ply/blob/master/setup.md
+# and https://github.com/dabeaz/ply/issues/59#issuecomment-95654733 (unclear if specific to PLY-3.5)
+ply = {url = "http://www.dabeaz.com/ply/ply-3.11.tar.gz"}
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+black = "^20.8b1"
+pylint = "^2.6.2"
+# Uncomment to use tox in future if necessary
+# tox = "^3.22.0"
+# [build-system]
+# requires = ["poetry-core>=1.0.0"]
+# build-backend = "poetry.core.masonry.api"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
