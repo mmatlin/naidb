@@ -1,4 +1,5 @@
 from .lexer import NaiDBLexer
+from .parser import parse_input
 
 
 def execute_file(input_):
@@ -7,7 +8,7 @@ def execute_file(input_):
 
 
 def execute_string(input_):
+    # Currently only lexes/parses, doesn't execute
     lexer = NaiDBLexer()
-    lexer.input_(input_)
-    tokens = lexer.get_tokens()
-    return tuple(tokens)
+    ast = parse_input(input_, lexer.lexer)
+    return ast

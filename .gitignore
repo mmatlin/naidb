@@ -8,3 +8,7 @@ __pycache__/
 
 # VS Code
 .vscode/
+
+# PLY yacc output
+/naidb/parser.out
+/naidb/parsetab.py

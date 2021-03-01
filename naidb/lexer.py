@@ -4,10 +4,12 @@ from ply import lex
 class NaiDBLexer:
     def __init__(self, **kwargs):
         self.lexer = lex.lex(module=self, **kwargs)
+        self.already_created_EOF_token = False
 
     def input_(self, data):
         self.lexer.input(data)
 
+    # Possibly remove these two functions later on, they may not have a use
     def get_token(self):
         while token := self.lexer.token():
             yield token
@@ -26,9 +28,6 @@ class NaiDBLexer:
     }
 
     tokens = [
-        "NAME",
-        "NEWLINE",
-        "NUMBER",
         "LPAREN",
         "RPAREN",
         "LBRACKET",
@@ -47,6 +46,11 @@ class NaiDBLexer:
         "SINGLEEQUALS",
         "DOT",
         "COMMA",
+        "SEMICOLON",
+        "NAME",
+        "NUMBER",
+        "STRING",
+        "EOF",
     ] + list(reserved.values())
 
     t_LPAREN = r"\("
@@ -67,6 +71,7 @@ class NaiDBLexer:
     t_SINGLEEQUALS = r"="
     t_DOT = r"\."
     t_COMMA = r","
+    t_SEMICOLON = r";"
 
     t_ignore_COMMENT = r"//.*"
     t_ignore = " \t"
@@ -84,6 +89,19 @@ class NaiDBLexer:
     def t_NEWLINE(self, t):
         r"\n+"
         t.lexer.lineno += len(t.value)
+        pass
+
+    def t_STRING(self, t):
+        # This regex accounts for backslash-escaping and accepts strings with either single or double quotes
+        r"\"(\\(.|\n)|[^\"\n\\])*\"|'(\\(.|\n)|[^'\n\\])*'"
         return t
+
+    def t_eof(self, t):
+        if not self.already_created_EOF_token:
+            t.type = "EOF"
+            self.already_created_EOF_token = True
+            return t
+        else:
+            return None
 
     # TODO: define t_error rule
